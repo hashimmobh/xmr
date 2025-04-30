@@ -51,6 +51,7 @@ Description=XMRig Monero Miner
 After=network.target
 
 [Service]
+ExecStartPre=/sbin/sysctl -w vm.nr_hugepages=128
 ExecStart=/opt/xmrig/build/xmrig --config=/opt/xmrig/build/config.json
 WorkingDirectory=/opt/xmrig/build
 Restart=always
