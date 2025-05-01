@@ -1,5 +1,19 @@
 #!/bin/bash
 
+cat << 'EOF'
+
+ /$$   /$$  /$$$$$$                /$$            
+| $$  | $$ /$$__  $$              | $$            
+| $$  | $$| $$  \ $$      /$$$$$$$| $$$$$$$       
+| $$$$$$$$| $$$$$$$$     /$$_____/| $$__  $$      
+| $$__  $$| $$__  $$    |  $$$$$$ | $$  \ $$      
+| $$  | $$| $$  | $$     \____  $$| $$  | $$      
+| $$  | $$| $$  | $$ /$$ /$$$$$$$/| $$  | $$      
+|__/  |__/|__/  |__/|__/|_______/ |__/  |__/      
+                                                  
+
+EOF
+
 # Update and install dependencies
 sudo apt update && sudo apt upgrade -y
 sudo apt install -y git build-essential cmake automake libtool autoconf \
