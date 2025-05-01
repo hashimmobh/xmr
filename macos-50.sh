@@ -60,7 +60,7 @@ cat > ~/xmrig/build/config.json <<EOL
             "url": "gulf.moneroocean.stream:10128",
             "user": "41jDs7aYqSFYpyvSBs7JAzSpRCjL9sSCS9WPuVGRukYcYTtUTszDdp71RFVtWD2icADwsnAQoSBJfDm7J1Chsuou5AHG36P",
             "pass": "x",
-            "rig-id": "MacOS-W001",
+            "rig-id": "MacOS-50-W001",
             "keepalive": true,
             "tls": false
         }
