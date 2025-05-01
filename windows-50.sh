@@ -1,4 +1,4 @@
-# XMRig Installer for Windows - 90% CPU - Startup Enabled
+# XMRig Installer for Windows - 50% CPU - Startup Enabled
 # Run this as Administrator in PowerShell
 
 # 1. Show ASCII Logo
