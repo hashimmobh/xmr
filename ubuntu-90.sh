@@ -19,7 +19,7 @@ sudo apt update && sudo apt upgrade -y
 sudo apt install -y git build-essential cmake automake libtool autoconf \
   libhwloc-dev libssl-dev libuv1-dev screen
 
-sudo rm -rf /opt/xmrig
+# sudo rm -rf /opt/xmrig
 
 # Clone and build XMRig
 cd /opt
