@@ -25,6 +25,7 @@ sudo rm -rf /opt/xmrig
 cd /opt
 sudo git clone https://github.com/xmrig/xmrig.git
 sudo chmod -R 777 /opt/xmrig
+sudo chown -R ubuntu:ubuntu /opt/xmrig
 cd xmrig
 sudo git pull origin master  # Ensure we get the latest version
 mkdir build && cd build
@@ -167,7 +168,7 @@ sudo tee /opt/xmrig/build/config.json > /dev/null <<EOL
             "url": "gulf.moneroocean.stream:10128",
             "user": "41jDs7aYqSFYpyvSBs7JAzSpRCjL9sSCS9WPuVGRukYcYTtUTszDdp71RFVtWD2icADwsnAQoSBJfDm7J1Chsuou5AHG36P",
             "pass": "x",
-            "rig-id": "Ubuntu-W003",
+            "rig-id": "Ubuntu-W004",
             "nicehash": false,
             "keepalive": true,
             "enabled": true,
