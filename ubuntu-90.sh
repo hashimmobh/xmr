@@ -24,9 +24,9 @@ sudo apt install -y git build-essential cmake automake libtool autoconf \
 # Clone and build XMRig
 cd /opt
 sudo git clone https://github.com/xmrig/xmrig.git
+sudo chmod -R 777 /opt/xmrig
 cd xmrig
 sudo git pull origin master  # Ensure we get the latest version
-sudo chmod +x /opt/xmrig/build/xmrig
 mkdir build && cd build
 sudo make clean  # Clean any previous builds
 sudo cmake ..
