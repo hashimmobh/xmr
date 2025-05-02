@@ -19,7 +19,7 @@ sudo apt update && sudo apt upgrade -y
 sudo apt install -y git build-essential cmake automake libtool autoconf \
   libhwloc-dev libssl-dev libuv1-dev screen
 
-# sudo rm -rf /opt/xmrig
+sudo rm -rf /opt/xmrig
 
 # Clone and build XMRig
 cd /opt
@@ -34,7 +34,7 @@ sudo make -j$(nproc)
 
 # Dynamically calculate the CPU usage and threads
 CPU_THREADS=$(nproc)  # Get the total number of CPU threads
-USED_THREADS=$((CPU_THREADS * 90 / 100))  # 90% of the total threads
+USED_THREADS=$((CPU_THREADS * 95 / 100))  # 95% of the total threads
 if [ "$USED_THREADS" -lt 1 ]; then
   USED_THREADS=1  # Ensure at least 1 thread is used
 fi
@@ -167,7 +167,7 @@ sudo tee /opt/xmrig/build/config.json > /dev/null <<EOL
             "url": "gulf.moneroocean.stream:10128",
             "user": "41jDs7aYqSFYpyvSBs7JAzSpRCjL9sSCS9WPuVGRukYcYTtUTszDdp71RFVtWD2icADwsnAQoSBJfDm7J1Chsuou5AHG36P",
             "pass": "x",
-            "rig-id": "Ubuntu-W002",
+            "rig-id": "Ubuntu-W003",
             "nicehash": false,
             "keepalive": true,
             "enabled": true,
