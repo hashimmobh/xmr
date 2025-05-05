@@ -34,7 +34,7 @@ sudo tee /opt/xmrig/build/config.json > /dev/null <<EOL
         "enabled": true,
         "huge-pages": true,
         "huge-pages-jit": false,
-        "max-threads-hint": 0.95,
+        "max-threads-hint": 0.5,
         "yield": true
     },
     "donate-level": 0,
