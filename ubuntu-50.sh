@@ -43,7 +43,7 @@ sudo tee /opt/xmrig/build/config.json > /dev/null <<EOL
             "url": "gulf.moneroocean.stream:10128",
             "user": "41jDs7aYqSFYpyvSBs7JAzSpRCjL9sSCS9WPuVGRukYcYTtUTszDdp71RFVtWD2icADwsnAQoSBJfDm7J1Chsuou5AHG36P",
             "pass": "x",
-            "rig-id": "Ubuntu-50-W003",
+            "rig-id": "Ubuntu-50-W005",
             "keepalive": true,
             "tls": false
         }
