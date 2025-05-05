@@ -77,7 +77,7 @@ sudo tee /opt/xmrig/build/config.json > /dev/null <<EOL
     },
     "cpu": {
         "enabled": true,
-        "max-threads-hint": 1.0,  
+        "max-threads-hint": 0.95,  
         "huge-pages": true,
         "huge-pages-jit": false,
         "hw-aes": null,
