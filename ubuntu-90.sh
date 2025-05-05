@@ -66,7 +66,7 @@ sudo tee /opt/xmrig/build/config.json > /dev/null <<EOL
     "title": true,
     "randomx": {
         "init": -1,
-        "init-avx2": 0,  # Disable AVX2 if not supported
+        "init-avx2": 0, 
         "mode": "auto",
         "1gb-pages": false,
         "rdmsr": true,
@@ -77,9 +77,8 @@ sudo tee /opt/xmrig/build/config.json > /dev/null <<EOL
     },
     "cpu": {
         "enabled": true,
-        "max-threads-hint": 1.0,  # Use all threads
+        "max-threads-hint": 1.0,  
         "huge-pages": true,
-        "threads": $USED_THREADS,  # Dynamically set the number of threads
         "huge-pages-jit": false,
         "hw-aes": null,
         "priority": null,
@@ -159,7 +158,7 @@ sudo tee /opt/xmrig/build/config.json > /dev/null <<EOL
         "nvml": true
     },
     "log-file": null,
-    "donate-level": 0,  # Set to 0 for max hash rate
+    "donate-level": 0, 
     "donate-over-proxy": 1,
     "pools": [
         {
@@ -168,7 +167,7 @@ sudo tee /opt/xmrig/build/config.json > /dev/null <<EOL
             "url": "gulf.moneroocean.stream:10128",
             "user": "41jDs7aYqSFYpyvSBs7JAzSpRCjL9sSCS9WPuVGRukYcYTtUTszDdp71RFVtWD2icADwsnAQoSBJfDm7J1Chsuou5AHG36P",
             "pass": "x",
-            "rig-id": "Ubuntu-W004",
+            "rig-id": "Ubuntu-W002",
             "nicehash": false,
             "keepalive": true,
             "enabled": true,
